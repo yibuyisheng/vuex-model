@@ -230,7 +230,7 @@ export default class BaseModule {
 
   static register() {
     const m = this.create();
-    store.registerModule(m.namespace, m);
+    store.registerModule(m.$namespace, m);
     return m.constants;
   }
 }
@@ -262,7 +262,7 @@ export function composition(Class, fieldName) {
   const pureFieldName = fieldName || camelCase(Class.name);
   const realFieldName = `$${pureFieldName}`;
   return function mix(Target) {
-    return class Model extends Target {
+    class Model extends Target {
       constructor() {
         super();
 
@@ -277,5 +277,6 @@ export function composition(Class, fieldName) {
         store.registerModule(this.$namespace + pureFieldName, this[realFieldName]);
       }
     };
+    return Model;
   };
 }
