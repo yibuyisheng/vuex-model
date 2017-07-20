@@ -3,9 +3,36 @@
  * @author yibuyisheng(yibuyisheng@163.com)
  */
 
-import { each, get, assign, isObject, cloneDeep, camelCase, snakeCase } from 'lodash';
+import { each, get, assign, isObject, cloneDeep, camelCase, snakeCase, isString } from 'lodash';
 import Vue from 'vue';
 import store from './store';
+
+const storeConstants = {};
+
+Vue.use({
+  install(VueClass) {
+    assign(VueClass.prototype, {
+      $storeConstants: storeConstants,
+      getConstants(namespace) {
+        return isString(namespace) ? this.$storeConstants[namespace.replace(/:$/, '')] : {};
+      }
+    });
+
+    VueClass.mixin({
+      beforeCreate() {
+        this.$constants = this.getConstants(this.$options.namespace);
+      },
+      create() {
+        if (this.$options.props
+          && this.$options.props.namespace
+          && isString(this.namespace)
+        ) {
+          this.$constants = this.getConstants(this.namespace);
+        }
+      }
+    });
+  }
+});
 
 function getActions(model, cstObj) {
   const $$action = {};
@@ -228,10 +255,16 @@ export default class BaseModule {
     return createModule(m);
   }
 
+  /**
+   * 创建并注册 module
+   *
+   * @public
+   * @static
+   */
   static register() {
     const m = this.create();
-    store.registerModule(m.$namespace, m);
-    return m.constants;
+    store.registerModule(m.namespace, m);
+    storeConstants[m.namespace] = m.constants;
   }
 }
 
@@ -275,6 +308,7 @@ export function composition(Class, fieldName) {
         m.$namespace = `${this.$namespace}${pureFieldName}:`;
         this[realFieldName] = createModule(m);
         store.registerModule(this.$namespace + pureFieldName, this[realFieldName]);
+        storeConstants[this[realFieldName].namespace] = this[realFieldName].constants;
       }
     };
     return Model;

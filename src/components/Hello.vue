@@ -22,10 +22,9 @@
 </template>
 
 <script>
-import { test } from '@/store';
-
 export default {
   name: 'hello',
+  namespace: 'test:',
   data() {
     return {
       msg: 'Welcome to Your Vue.js App'
@@ -33,12 +32,12 @@ export default {
   },
   computed: {
     name() {
-      return this.$store.getters[test.NAME];
+      return this.$store.getters[this.$constants.NAME];
     }
   },
   created() {
     setInterval(() => {
-      this.$store.dispatch(test.UPDATE_NAME_ACTION, Date.now());
+      this.$store.dispatch(this.$constants.UPDATE_NAME_ACTION, Date.now());
     }, 1000);
   }
 };
