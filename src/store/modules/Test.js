@@ -1,4 +1,4 @@
-import BaseModule, { action, composition } from './BaseModule';
+import BaseModule, { action, composition } from '../BaseModule';
 import List from './List';
 
 @composition(List)

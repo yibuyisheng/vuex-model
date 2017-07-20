@@ -22,9 +22,12 @@
 </template>
 
 <script>
+import { pageMixin } from '@/store';
+
 export default {
   name: 'hello',
   namespace: 'test:',
+  mixins: [pageMixin],
   data() {
     return {
       msg: 'Welcome to Your Vue.js App'

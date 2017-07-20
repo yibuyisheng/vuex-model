@@ -1,4 +1,4 @@
-import BaseModule, { action } from './BaseModule';
+import BaseModule, { action } from '../BaseModule';
 
 export default class List extends BaseModule {
   state = {

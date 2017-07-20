@@ -5,23 +5,25 @@
 
 import { each, get, assign, isObject, cloneDeep, camelCase, snakeCase, isString } from 'lodash';
 import Vue from 'vue';
-import store from './store';
+import store from './common/store';
 
 const storeConstants = {};
 
+function getConstants(namespace) {
+  return isString(namespace) ? storeConstants[namespace.replace(/:$/, '')] : {};
+}
+
 Vue.use({
   install(VueClass) {
-    assign(VueClass.prototype, {
-      $storeConstants: storeConstants,
-      getConstants(namespace) {
-        return isString(namespace) ? this.$storeConstants[namespace.replace(/:$/, '')] : {};
-      }
+    Object.defineProperty(VueClass.prototype, 'getConstants', {
+      enumerable: false,
+      configurable: true,
+      writable: false,
+      value: getConstants
     });
 
+    // 非页面类型的组件才会存在 namespace prop
     VueClass.mixin({
-      beforeCreate() {
-        this.$constants = this.getConstants(this.$options.namespace);
-      },
       create() {
         if (this.$options.props
           && this.$options.props.namespace
