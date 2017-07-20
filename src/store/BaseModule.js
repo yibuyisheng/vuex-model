@@ -290,7 +290,6 @@ export function getter(target, key) {
   target.$$getter.push(key);
 }
 
-/* eslint-disable */
 export function composition(Class, fieldName) {
   const pureFieldName = fieldName || camelCase(Class.name);
   const realFieldName = `$${pureFieldName}`;
@@ -310,7 +309,7 @@ export function composition(Class, fieldName) {
         store.registerModule(this.$namespace + pureFieldName, this[realFieldName]);
         storeConstants[this[realFieldName].namespace] = this[realFieldName].constants;
       }
-    };
+    }
     return Model;
   };
 }
