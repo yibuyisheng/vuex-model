@@ -1,7 +1,8 @@
 import { assign } from 'lodash';
-import BaseModule, { action } from '../BaseModule';
+import { action } from '../BaseModule';
+import NetworkModule from './NetworkModule';
 
-export default class ContinuousListModule extends BaseModule {
+export default class ContinuousListModule extends NetworkModule {
 
   /**
    * @override
@@ -13,7 +14,7 @@ export default class ContinuousListModule extends BaseModule {
       loadingStatus: 'QUIET',
       // list 的开始标志
       startFlag: null,
-      // list 的技术标志
+      // list 的结束标志
       endFlag: null
     }
   };

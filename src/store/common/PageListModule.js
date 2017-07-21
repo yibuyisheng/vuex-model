@@ -1,7 +1,8 @@
 import { assign } from 'lodash';
-import BaseModule, { action } from '../BaseModule';
+import { action } from '../BaseModule';
+import NetworkModule from './NetworkModule';
 
-export default class PageListModule extends BaseModule {
+export default class PageListModule extends NetworkModule {
 
   state = {
     list: [],
